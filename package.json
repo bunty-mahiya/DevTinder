@@ -1,0 +1,15 @@
+{
+  "name": "devtinder",
+  "version": "1.0.0",
+  "description": "DevTinder Backend",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/App.js",
+    "dev": "nodemon src/App.js"
+  },
+  "author": "Bunty",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
