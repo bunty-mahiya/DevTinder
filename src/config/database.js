@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 // mongoose.connect("mongodb+srv://buntypopping348_db_user:7iehGvx386ZlnsDA@cluster1.oaxhdgh.mongodb.net/")
 const dbConnect=async()=>{
-  await mongoose.connect("mongodb+srv://buntypopping348_db_user:7iehGvx386ZlnsDA@cluster1.oaxhdgh.mongodb.net/")
+  await mongoose.connect("mongodb+srv://buntypopping348_db_user:7iehGvx386ZlnsDA@cluster1.oaxhdgh.mongodb.net/devtinder")
 }
 // dbConnect().then(()=>{
 //     console.log("database connected successfully"); 
