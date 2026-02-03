@@ -3,6 +3,8 @@ const express = require("express");
 const app = express();
 const {auth}=require("./MiddleAuth")
 const dbConnect=require("./config/database")
+const UserModel=require("./model/User")
+
 //multiple routes handler for single route
 // app.get("/abc", [
 //   (req, res, next) => {
@@ -52,6 +54,21 @@ const dbConnect=require("./config/database")
 // app.use("/user/register",auth,(req,res)=>{
 //   res.send("register sucessfull") 
 // })
+app.post("/singup", async (req,res)=>{
+  const user=new UserModel({
+    fistName:"manabh",
+    lastName:"Pop",
+    email:"manabh@gmail.com",
+    password:"17645",
+    age:25,
+  })
+  try{
+    await user.save();
+    res.send("user registered sucessfully");
+  }catch(err){
+    console.log("somthing wrong",err);
+  }
+})
 dbConnect().then(()=>{
     console.log("database connected successfully"); 
     app.listen(3000, () => {
@@ -61,6 +78,3 @@ dbConnect().then(()=>{
     console.log("error while connecting to database",err);
 })
 
-// app.listen(3000, () => {
-//   console.log("sucessfull  listing on part 3000");
-// });
