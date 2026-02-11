@@ -5,6 +5,7 @@ const {auth}=require("./MiddleAuth")
 const dbConnect=require("./config/database")
 const UserModel=require("./model/User")
 
+app.use(express.json())
 //multiple routes handler for single route
 // app.get("/abc", [
 //   (req, res, next) => {
@@ -55,13 +56,15 @@ const UserModel=require("./model/User")
 //   res.send("register sucessfull") 
 // })
 app.post("/singup", async (req,res)=>{
-  const user=new UserModel({
-    fistName:"manabh",
-    lastName:"Pop",
-    email:"manabh@gmail.com",
-    password:"17645",
-    age:25,
-  })
+  const user=new UserModel(req.body)
+  console.log(user);
+  // new UserModel({
+  //   fistName:"himanshu",
+  //   lastName:"gupta",
+  //   email:"himanshu@gmail.com",
+  //   password:"17645",
+  //   age:25,
+  // })
   try{
     await user.save();
     res.send("user registered sucessfully");
