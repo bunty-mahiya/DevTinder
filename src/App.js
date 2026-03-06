@@ -55,6 +55,34 @@ app.use(express.json())
 // app.use("/user/register",auth,(req,res)=>{
 //   res.send("register sucessfull") 
 // })
+
+// take all data from dataBase
+app.get("/feed" , async(req,res)=>{
+try{
+  const feedAllData=await UserModel.find({})
+   res.send(feedAllData)
+}catch(err){
+ res.status("400").send("something is wrong" + err)
+}
+}) 
+
+ // filter one  data from dataBase
+app.get("/user" , async(req,res)=>{
+ const usersEmail=req.body.email 
+  try{
+    const find= await UserModel.findOne({email:usersEmail})
+    if(!find){
+      res.status(400).send("User not found")
+    }else{
+      res.send(find)
+    }
+      res.send(find)
+  }catch(err){
+  res.status(400).send("somthing is wrong")
+  }
+}) 
+
+ // add some date from body(client)
 app.post("/singup", async (req,res)=>{
   const user=new UserModel(req.body)
   console.log(user);
@@ -69,13 +97,43 @@ app.post("/singup", async (req,res)=>{
     await user.save();
     res.send("user registered sucessfully");
   }catch(err){
-    console.log("somthing wrong",err);
+    console.log("somthing wrong" + err);
   }
+}) 
+
+// delete data
+app.delete("/user" , async(req,res)=> {
+ const userId=req.body.id;
+ try{
+  const deleteUser= await UserModel.findByIdAndDelete({_id:userId})
+   if (!deleteUser) {
+   res.status(404).send("User not found");
+  }
+  res.send("Succesfull Delete")
+ }catch(erro){
+  res.status(400).send("something went wrong")
+ }
+})
+
+// update Data
+app.patch("/user/update" , async (req,res)=>{
+const userId=req.body.id
+const data=req.body
+try{
+    const userUpdate= await UserModel.findByIdAndUpdate({_id:userId},data,{
+      returnDocument:"after",
+      runValidators:true
+    },)
+    res.send("succesfull user update")
+    console.log(userUpdate)
+}catch(err){
+  res.status(400).send("something went wrong"+err)
+}
 })
 dbConnect().then(()=>{
     console.log("database connected successfully"); 
     app.listen(3000, () => {
-   console.log("sucessfull  listing on part 3000");
+    console.log("sucessfull  listing on part 3000");
 });
 }).catch((err)=>{
     console.log("error while connecting to database",err);
