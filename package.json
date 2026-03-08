@@ -10,8 +10,10 @@
   "author": "Bunty",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "express": "^5.2.1",
     "mongoos": "^0.0.1-security",
-    "mongoose": "^9.1.5"
+    "mongoose": "^9.1.5",
+    "validator": "^13.15.26"
   }
 }

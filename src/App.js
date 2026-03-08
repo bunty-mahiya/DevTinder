@@ -1,9 +1,11 @@
-console.log("starting backend code");
+
 const express = require("express");
 const app = express();
 const {auth}=require("./MiddleAuth")
 const dbConnect=require("./config/database")
 const UserModel=require("./model/User")
+const {validition}=require("./utils/validator")
+const bcrypt=require("bcrypt")
 
 app.use(express.json())
 //multiple routes handler for single route
@@ -84,20 +86,28 @@ app.get("/user" , async(req,res)=>{
 
  // add some date from body(client)
 app.post("/singup", async (req,res)=>{
-  const user=new UserModel(req.body)
-  console.log(user);
   // new UserModel({
-  //   fistName:"himanshu",
-  //   lastName:"gupta",
-  //   email:"himanshu@gmail.com",
-  //   password:"17645",
-  //   age:25,
-  // })
-  try{
+    //   fistName:"himanshu",
+    //   lastName:"gupta",
+    //   email:"himanshu@gmail.com",
+    //   password:"17645",
+    //   age:25,
+    // })
+    const {firstName,lastName,email,password,phone}=req.body
+    try{
+      validition(req)
+      const encryptPassword= await bcrypt.hash(password,10)
+      const user=new UserModel({
+        firstName,
+        lastName,
+        email,
+        phone,
+        password:encryptPassword,
+      })
     await user.save();
     res.send("user registered sucessfully");
   }catch(err){
-    console.log("somthing wrong" + err);
+    res.send("Error :" + err.message);
   }
 }) 
 
@@ -120,14 +130,22 @@ app.patch("/user/update" , async (req,res)=>{
 const userId=req.body.id
 const data=req.body
 try{
+   const allowedUpdates =["id","age","skill","gender","about"]
+   const isUpdateAllowed=Object.keys(data).every((k)=>allowedUpdates.includes(k)
+   )
+   if(!isUpdateAllowed){
+    res.send("Invalid update fields")
+   }
+   if(data.skill?.length > 10){
+     throw new Error("Max 10 skills allowed")
+   }
     const userUpdate= await UserModel.findByIdAndUpdate({_id:userId},data,{
       returnDocument:"after",
       runValidators:true
     },)
     res.send("succesfull user update")
-    console.log(userUpdate)
 }catch(err){
-  res.status(400).send("something went wrong"+err)
+  res.status(400).send("kuchh problem hai"+err)
 }
 })
 dbConnect().then(()=>{
