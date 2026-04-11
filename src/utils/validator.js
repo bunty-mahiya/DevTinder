@@ -15,4 +15,9 @@ const validator=require("validator")
 
 }
 
-module.exports={validition}
+ function validitionOfUpdate(req){
+ const requireField=['firstName',"lastName","skill","gender","about","age","photoURL"]
+ const isRequireField=Object.keys(req.body).every((k)=>requireField.includes(k))
+ return isRequireField
+ }
+module.exports={validition,validitionOfUpdate}
