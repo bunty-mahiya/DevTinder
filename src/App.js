@@ -60,7 +60,7 @@ app.use("/",userRouter)
 dbConnect()
   .then(() => {
     console.log("database connected successfully");
-    app.listen(3000, () => {
+    app.listen(3000,"0.0.0.0", () => {
       console.log("sucessfull  listing on part 3000");
     });
   })
