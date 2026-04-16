@@ -5,7 +5,7 @@ const userAuth = async (req, res, next) => {
   try {
     const { token } = req.cookies;
     if (!token) {
-      res.status(401).send("Please login to access this route");
+     return res.status(401).send("Please login to access this route");
     }
 
     const decoded =  await jwt.verify(token, process.env.jwt_secret_key);
@@ -13,12 +13,12 @@ const userAuth = async (req, res, next) => {
 
     const userFind = await UserModel.findById(_id);
     if (!userFind) {
-      throw new Error("User not found");
+     return res.status(404).json({ message: "User not found" });
     }
     req.user = userFind;
     next();
   } catch (err) {
-    res.status(401).json({ message: err.message });
+   return res.status(401).json({ message: err.message });
   }
 };
 module.exports = userAuth ;
