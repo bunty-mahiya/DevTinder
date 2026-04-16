@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const dbConnect = require("./config/database");
@@ -60,8 +61,8 @@ app.use("/",userRouter)
 dbConnect()
   .then(() => {
     console.log("database connected successfully");
-    app.listen(3000,"0.0.0.0", () => {
-      console.log("sucessfull  listing on part 3000");
+    app.listen(process.env.PORT,"0.0.0.0", () => {
+      console.log("sucessfull  listing on part " + process.env.PORT);
     });
   })
   .catch((err) => {

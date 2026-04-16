@@ -23,7 +23,6 @@ authRouter.post("/singup", async (req, res) => {
     });
     const userSignup= await user.save();
      const token = await user.getJwt()
-     console.log(token)
     res.cookie("token", token,{
   expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // ✅ 1 din baad expire
   httpOnly: true , // JS se cookie access nahi hogi (security ke liye)
@@ -52,7 +51,6 @@ authRouter.post("/login", async (req, res) => {
       throw new Error("Invalid user");
     }
     const token = await user.getJwt()
-    // console.log(token)
     res.cookie("token", token,{
   expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // ✅ 1 din baad expire
   httpOnly: true  // JS se cookie access nahi hogi (security ke liye)

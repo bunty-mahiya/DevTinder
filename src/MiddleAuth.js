@@ -8,7 +8,7 @@ const userAuth = async (req, res, next) => {
       res.status(401).send("Please login to access this route");
     }
 
-    const decoded =  await jwt.verify(token,"Devtinder@328$2");
+    const decoded =  await jwt.verify(token, process.env.jwt_secret_key);
     const { _id } = decoded;
 
     const userFind = await UserModel.findById(_id);
