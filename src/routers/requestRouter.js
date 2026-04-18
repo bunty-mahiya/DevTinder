@@ -3,6 +3,7 @@ const requestRouter = express.Router();
 const userAuth  = require("../MiddleAuth");
 const connectionModel = require("../model/connectionRequest");
 const UserModel = require("../model/User");
+const { sendInterestedEmail } = require("../utils/EmailService");
 
 // sender  request bhej rha hai kisi user ko
 requestRouter.post(
@@ -37,6 +38,13 @@ requestRouter.post(
         return res.send("Connection already exist");
       }
       const data = await connectionRequest.save();
+       if (status === "interested") {
+        await sendInterestedEmail(
+          toReceiver.email,        // receiver ka email
+          toReceiver.firstName,    // receiver ka naam
+          req.user.firstName       // sender ka naam
+        );
+      }
       res.json({
         message: "connection succesfull :" +status,data
       });
