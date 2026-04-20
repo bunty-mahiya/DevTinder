@@ -10,6 +10,7 @@ const requestRouter =require("./routers/requestRouter")
 const userRouter =require("./routers/userRouter")
 const cors = require("cors");
 app.use(express.json()); // middleware for read req.body
+require("./utils/cronSchedule");
 
 app.use(cookie()); /// middleware for read req.cookie
 app.use(cors({

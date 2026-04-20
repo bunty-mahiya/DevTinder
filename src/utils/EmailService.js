@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { SESClient, SendEmailCommand } = require("@aws-sdk/client-ses"); // ✅ fix
+const { SESClient, SendEmailCommand } = require("@aws-sdk/client-ses");
 
 const sesClient = new SESClient({
   region: process.env.AWS_REGION,
@@ -10,13 +10,12 @@ const sesClient = new SESClient({
 });
 
 const sendInterestedEmail = async (toEmail, toName, fromName) => {
-  // ✅ Debug ke liye — check karo kya values aa rahi hain
   console.log("Sending email to:", toEmail, toName, fromName);
 
   const params = {
-    Source: process.env.SES_FROM_EMAIL,
+    Source: "poppingbunty@gmail.com", 
     Destination: {
-      ToAddresses: [toEmail],
+      ToAddresses: ["buntymahiya777@gmail.com"], 
     },
     Message: {
       Subject: {
@@ -29,7 +28,7 @@ const sendInterestedEmail = async (toEmail, toName, fromName) => {
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 24px; border: 1px solid #eee; border-radius: 8px;">
               <h2 style="color: #e05c5c;">You have a new connection request! 🔥</h2>
               <p>Hello <strong>${toName}</strong>,</p>
-              <p><strong>${fromName}</strong> ne tumhe connection request bheji hai.</p>
+              <p><strong>${fromName}</strong> ne tumhe connection request bheji hai and more people.</p>
               <p>App pe jaake accept ya ignore karo.</p>
               <br/>
               <p style="color: #999; font-size: 12px;">FindDate — Find your dev partner</p>

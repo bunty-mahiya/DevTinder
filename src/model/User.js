@@ -84,7 +84,7 @@ const schema = new mongoose.Schema(
 
 schema.methods.getJwt = async function(){
  const user=this;
- const token =jwt.sign({_id:user._id},"Devtinder@328$2",{expiresIn:"1d"})
+ const token =jwt.sign({_id:user._id},process.env.jwt_secret_key,{expiresIn:"1d"})
  return token; 
 }
 schema.methods.comperes= async function(userInputPass){
