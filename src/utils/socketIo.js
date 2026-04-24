@@ -1,7 +1,8 @@
 const socket = require("socket.io");
 const crypto = require("crypto");
 const Chat = require("../model/chatSchema");
-
+const connectionModel = require("../model/connectionRequest");
+const userAuth = require("../MiddleAuth");
 const uniqueRoomId = (loginUserId, userId) => {
   return crypto
     .createHash("sha256")
@@ -19,7 +20,7 @@ const handleSocket = (server) => {
   io.on("connection", (socket) => {
     socket.on("joinChat", ({ firstName, lastName, loginUserId, userId }) => {
       const room = uniqueRoomId(loginUserId, userId);
-      console.log(firstName + lastName+ ":" + room);
+      console.log(firstName + lastName + ":" + room);
       socket.join(room);
     });
     socket.on(
@@ -27,26 +28,46 @@ const handleSocket = (server) => {
       async ({ firstName, loginUserId, lastName, userId, text }) => {
         try {
           const room = uniqueRoomId(loginUserId, userId);
-          console.log(firstName +lastName, text,);
+          console.log(firstName + lastName, text);
+
+          const checkValidUser = await connectionModel.findOne({
+            status: "accepted",
+            $or: [
+              { senderId: loginUserId, receiverId: userId },
+              { senderId: userId, receiverId: loginUserId }
+            ],
+          });
+          if (!checkValidUser) {
+            console.log("something is error");
+            throw new Error("you are not a friend list");
+          }
           // store message
-          let Chatmessage = await Chat.findOne({       // existing chat store 
+          let Chatmessage = await Chat.findOne({
+            // existing chat store
             participant: { $all: [loginUserId, userId] },
           });
           if (!Chatmessage) {
-            Chatmessage = new Chat({       // if chat is not  existing  so it ematy add loginUserId and userId or message is emty
+            Chatmessage = new Chat({
+              // if chat is not  existing  so it ematy add loginUserId and userId or message is emty
               participant: [loginUserId, userId],
               message: [],
             });
           }
-          Chatmessage.message.push({    // and push all new data in mongoDB 
+          Chatmessage.message.push({
+            // and push all new data in mongoDB
             senderId: loginUserId,
             text,
           });
-           await Chatmessage.save()
-                // Last inserted message ka createdAt nikalo
-              const savedMsg = Chatmessage.message[Chatmessage.message.length - 1];
+          await Chatmessage.save();
+          // Last inserted message ka createdAt nikalo
+          const savedMsg = Chatmessage.message[Chatmessage.message.length - 1];
 
-          io.to(room).emit("receiveMessage", { firstName, lastName, text , createdAt: savedMsg.createdAt,});
+          io.to(room).emit("receiveMessage", {
+            firstName,
+            lastName,
+            text,
+            createdAt: savedMsg.createdAt,
+          });
         } catch (err) {
           console.log(err);
         }
