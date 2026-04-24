@@ -10,7 +10,7 @@ const validator=require("validator")
   throw new Error("Enter valid Email")
   }
   else if(!validator.isStrongPassword(password)){
-  throw new Error("Enter strong Password")
+  throw new Error("Password must contain at least 1 uppercase letter, 1 number, and 1 special character (!@#$%^&*).")
   }
 
 }

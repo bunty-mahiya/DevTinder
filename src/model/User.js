@@ -61,10 +61,6 @@ const schema = new mongoose.Schema(
         }
       },
     },
-    // gender: {
-    //   type: String,
-    //   enum: ["male", "female", "other"],
-    // },
     photoURL: {
       type: String,
       default:
