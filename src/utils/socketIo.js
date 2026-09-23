@@ -13,7 +13,7 @@ const handleSocket = (server) => {
   const io = socket(server, {
     // attach Socket.IO to the HTTP server
     cors: {
-      origin: "https://find-date-web.vercel.app",
+      origin: process.env.CLIENT_URL,
     },
   });
 
