@@ -13,7 +13,7 @@ const handleSocket = (server) => {
   const io = socket(server, {
     // attach Socket.IO to the HTTP server
     cors: {
-      origin: "http://localhost:5173", // allow your frontend ,Allows your frontend URL to connect (CORS policy)
+      origin: process.env.CLIENT_URL, // allow your frontend ,Allows your frontend URL to connect (CORS policy)
     },
   });
 
