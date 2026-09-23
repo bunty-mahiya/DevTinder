@@ -14,6 +14,7 @@ const handleSocket = (server) => {
     // attach Socket.IO to the HTTP server
     cors: {
       origin: process.env.CLIENT_URL,
+      credentials: true,
     },
   });
 
