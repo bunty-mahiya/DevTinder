@@ -17,7 +17,7 @@ const handleSocket = require("./utils/socketIo");
 const chatRouter = require("./routers/chat");
 app.use(cookie()); /// middleware for read req.cookie
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: process.env.CLIENT_URL,
   credentials: true,
 }))
 app.use("/",authRouter)

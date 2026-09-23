@@ -26,7 +26,6 @@ const data = pendingRequest.filter(val => {
   seen.add(email);
   return true;
 });
-console.log(data);
 for (let req of data) {
   await sendInterestedEmail(
     req.receiverId.email+ "",
